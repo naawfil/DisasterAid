@@ -31,7 +31,7 @@ const AuditTrail = () => {
   return (
     <>
       <h1 className="display display-lg">Audit &amp; exports</h1>
-      <p className="lede">A read-only history of who changed what, plus one-click CSV exports for reporting.</p>
+      <p className="lede">A read only history of who changed what, plus one click CSV exports for reporting.</p>
 
       {error && <p className="alert" role="alert">{error}</p>}
 
