@@ -5,7 +5,13 @@ export const getToken = () => localStorage.getItem(TOKEN_KEY);
 export const setToken = (token) => localStorage.setItem(TOKEN_KEY, token);
 export const clearToken = () => localStorage.removeItem(TOKEN_KEY);
 
-
+export class ApiRequestError extends Error {
+  constructor(message, status, details) {
+    super(message);
+    this.status = status;
+    this.details = details || [];
+  }
+}
 
 const request = async (path, { method = 'GET', body, auth = true } = {}) => {
   const headers = { 'Content-Type': 'application/json' };
