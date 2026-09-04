@@ -1,6 +1,9 @@
 import BaseRepository from './BaseRepository.js';
 import InventoryItem from '../models/InventoryItem.js';
 
+/** Lets a product name be matched literally in a $regex without its punctuation being read as regex syntax. */
+const escapeRegex = (text) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
 class InventoryRepository extends BaseRepository {
   constructor() {
     super(InventoryItem);
@@ -30,6 +33,21 @@ class InventoryRepository extends BaseRepository {
 
   increment(itemId, amount) {
     return this.model.findByIdAndUpdate(itemId, { $inc: { quantity: amount } }, { new: true });
+  }
+
+  /**
+   * Rows to draw down when a request is fulfilled outside the Dispatch flow
+   * (a volunteer completing a field task rather than a manager building a
+   * dispatch order) — nothing on the request says which warehouse to use, so
+   * this matches by product name across every warehouse, richest stock first,
+   * and falls back to the request line's category when no specific product
+   * name was recorded (an older or manually-entered request line).
+   */
+  findFulfillmentCandidates(name, category) {
+    const filter = name
+      ? { name: { $regex: new RegExp(`^${escapeRegex(name.trim())}$`, 'i') }, quantity: { $gt: 0 } }
+      : { category, quantity: { $gt: 0 } };
+    return this.model.find(filter).sort({ quantity: -1 });
   }
 
   lowStock() {
