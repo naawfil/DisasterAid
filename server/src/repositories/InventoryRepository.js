@@ -63,7 +63,7 @@ class InventoryRepository extends BaseRepository {
       : { category, quantity: { $gt: 0 } };
     return this.model.find(filter).sort({ quantity: -1 });
   }
-  }
+  
 
   lowStock() {
     return this.model
