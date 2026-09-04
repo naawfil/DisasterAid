@@ -62,7 +62,7 @@ const PublicShelters = () => {
       {loading ? (
         <p className="loading">Loading shelters…</p>
       ) : shelters.length === 0 ? (
-        <Empty>No shelters match those filters right now.</Empty>
+        <Empty>No shelters match those filters right now — try clearing one.</Empty>
       ) : (
         <ul className="card-list">
           {shelters.map((shelter) => {

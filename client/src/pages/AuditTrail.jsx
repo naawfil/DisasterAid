@@ -46,7 +46,7 @@ const AuditTrail = () => {
 
       <h2 className="sub-head">Recent activity{!loading && logs.length > 0 ? ` (${logs.length})` : ''}</h2>
       {loading ? (
-        <p className="loading">Loading the audit trail…</p>
+        <p className="loading">Loading audit history…</p>
       ) : logs.length === 0 ? (
         <Empty>Nothing recorded yet.</Empty>
       ) : (

@@ -38,7 +38,7 @@ const FindPeople = () => {
         <input
           value={term}
           onChange={(e) => setTerm(e.target.value)}
-          placeholder="Name or hometown"
+          placeholder="Search by name or hometown"
           aria-label="Name or hometown"
         />
         <button type="submit" className="btn btn-primary btn-inline" disabled={busy}>
