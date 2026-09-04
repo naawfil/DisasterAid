@@ -7,13 +7,19 @@ const AuditTrail = () => {
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [auditForbidden, setAuditForbidden] = useState(false);
   const [exporting, setExporting] = useState('');
 
   useEffect(() => {
     api
       .get('/admin/audit')
       .then((data) => setLogs(data.logs))
-      .catch((err) => setError(err.message))
+      .catch((err) => {
+        // /admin/audit is ADMIN-only, but a relief manager can still reach this
+        // page for the exports below — don't read that 403 as "no history".
+        if (err.status === 403) setAuditForbidden(true);
+        else setError(err.message);
+      })
       .finally(() => setLoading(false));
   }, []);
 
@@ -46,6 +52,8 @@ const AuditTrail = () => {
       <h2 className="sub-head">Recent activity{!loading && logs.length > 0 ? ` (${logs.length})` : ''}</h2>
       {loading ? (
         <p className="loading">Loading the audit trail…</p>
+      ) : auditForbidden ? (
+        <Empty>Only admins can view the full audit history. Your CSV exports above still work.</Empty>
       ) : logs.length === 0 ? (
         <Empty>Nothing recorded yet.</Empty>
       ) : (
