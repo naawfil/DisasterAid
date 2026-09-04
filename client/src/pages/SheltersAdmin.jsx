@@ -103,7 +103,6 @@ const SheltersAdmin = () => {
 
   return (
     <>
-      <p className="slip-band">Shelter operations</p>
       <h1 className="display display-lg">Shelters</h1>
       <p className="lede">Log arrivals and departures here — the public dashboard updates immediately.</p>
 

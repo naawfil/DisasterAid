@@ -75,7 +75,6 @@ const TrackRequest = () => {
 
   return (
     <>
-      <p className="slip-band">Request tracking</p>
       <h1 className="display display-lg">Track your request</h1>
       <p className="lede">Enter the tracking code you were given when you submitted your request.</p>
 

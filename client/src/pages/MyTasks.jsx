@@ -53,7 +53,6 @@ const MyTasks = () => {
 
   return (
     <>
-      <p className="slip-band">Field checklist · {open.length} open</p>
       <h1 className="display display-lg">My tasks</h1>
 
       {error && <p className="alert" role="alert">{error}</p>}

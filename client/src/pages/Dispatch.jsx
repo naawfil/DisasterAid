@@ -122,7 +122,6 @@ const Dispatch = () => {
 
   return (
     <>
-      <p className="slip-band">Dispatch · stock is deducted on creation</p>
       <h1 className="display display-lg">Dispatch orders</h1>
 
       {error && <p className="alert" role="alert">{error}</p>}

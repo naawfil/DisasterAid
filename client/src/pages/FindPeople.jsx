@@ -27,7 +27,6 @@ const FindPeople = () => {
 
   return (
     <>
-      <p className="slip-band">Safety registry</p>
       <h1 className="display display-lg">Find someone</h1>
       <p className="lede">
         Search by name or hometown to see whether someone has checked into a shelter. Only name, hometown

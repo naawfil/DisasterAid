@@ -30,7 +30,6 @@ const AuditTrail = () => {
 
   return (
     <>
-      <p className="slip-band">Administration</p>
       <h1 className="display display-lg">Audit &amp; exports</h1>
 
       {error && <p className="alert" role="alert">{error}</p>}

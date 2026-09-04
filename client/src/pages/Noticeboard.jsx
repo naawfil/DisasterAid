@@ -52,7 +52,6 @@ const Noticeboard = () => {
 
   return (
     <>
-      <p className="slip-band">Official notices</p>
       <h1 className="display display-lg">Noticeboard</h1>
       <p className="lede">Verified updates from the relief coordination team.</p>
 

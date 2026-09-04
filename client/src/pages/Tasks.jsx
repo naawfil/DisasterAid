@@ -92,7 +92,6 @@ const Tasks = () => {
 
   return (
     <>
-      <p className="slip-band">Field operations · {volunteers.length} volunteer(s) on shift</p>
       <h1 className="display display-lg">Tasks</h1>
       <p className="lede">Only volunteers who are active and on shift appear in the dropdown.</p>
 

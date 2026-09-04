@@ -140,7 +140,6 @@ const RequestAid = () => {
   if (submitted) {
     return (
       <>
-        <p className="slip-band">Request received</p>
         <h1 className="display display-lg">Help is being arranged</h1>
         <div className="tracking-callout">
           <span>Your tracking code</span>
@@ -156,7 +155,6 @@ const RequestAid = () => {
 
   return (
     <>
-      <p className="slip-band">Aid request · anyone can submit</p>
       <h1 className="display display-lg">Request aid</h1>
       <p className="lede">
         Tell us what you need and where you are. You do not need an account. Everything on this page is

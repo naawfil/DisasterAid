@@ -47,7 +47,6 @@ const People = () => {
 
   return (
     <>
-      <p className="slip-band">Access control · {users.length} accounts</p>
       <h1 className="display display-lg">People</h1>
       <p className="lede">Roles decide what each account can reach. Only admins can change them.</p>
 

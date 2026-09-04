@@ -75,7 +75,6 @@ const Triage = () => {
 
   return (
     <>
-      <p className="slip-band">Request queue · {requests.length} shown</p>
       <h1 className="display display-lg">Requests</h1>
       <p className="lede">Sorted by priority, then by how long they have been waiting.</p>
 

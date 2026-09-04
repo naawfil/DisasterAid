@@ -33,7 +33,6 @@ const PublicShelters = () => {
 
   return (
     <>
-      <p className="slip-band">Shelter capacity · updated live</p>
       <h1 className="display display-lg">Shelters</h1>
       <p className="lede">Spaces update as shelter staff log arrivals and departures.</p>
 
