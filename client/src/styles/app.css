@@ -59,7 +59,7 @@ a {
 /* ---------- type ---------- */
 .display {
   margin: 0 0 6px;
-  font-family: 'Big Shoulders Display', 'Merriweather', serif;
+  font-family: 'Playfair Display', 'Merriweather', serif;
   font-weight: 800;
   font-size: 38px;
   line-height: 1;
@@ -204,7 +204,7 @@ a:focus-visible {
   padding: 10px 18px;
   border: 1px solid transparent;
   border-radius: var(--radius);
-  font-family: 'Big Shoulders Display', sans-serif;
+  font-family: 'Playfair Display', 'Merriweather', serif;
   font-size: 17px;
   font-weight: 700;
   letter-spacing: 0.05em;
@@ -280,7 +280,7 @@ a:focus-visible {
 }
 
 .wordmark {
-  font-family: 'Big Shoulders Display', sans-serif;
+  font-family: 'Playfair Display', 'Merriweather', serif;
   font-size: 27px;
   font-weight: 800;
   letter-spacing: 0.02em;
@@ -369,7 +369,7 @@ a:focus-visible {
 
 .roadmap h2 {
   margin: 0 0 2px;
-  font-family: 'Big Shoulders Display', sans-serif;
+  font-family: 'Playfair Display', 'Merriweather', serif;
   font-size: 20px;
   font-weight: 600;
   text-transform: uppercase;
@@ -503,7 +503,7 @@ a:focus-visible {
 
 .sub-head {
   margin: 24px 0 10px;
-  font-family: 'Big Shoulders Display', sans-serif;
+  font-family: 'Playfair Display', 'Merriweather', serif;
   font-size: 19px;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -537,7 +537,7 @@ a:focus-visible {
 
 .panel-head h2 {
   margin: 0;
-  font-family: 'Big Shoulders Display', sans-serif;
+  font-family: 'Playfair Display', 'Merriweather', serif;
   font-size: 21px;
   font-weight: 600;
   text-transform: uppercase;
@@ -566,7 +566,7 @@ a:focus-visible {
 
 .card-list h2 {
   margin: 0 0 2px;
-  font-family: 'Big Shoulders Display', sans-serif;
+  font-family: 'Playfair Display', 'Merriweather', serif;
   font-size: 21px;
   font-weight: 600;
   text-transform: uppercase;
@@ -619,7 +619,7 @@ a:focus-visible {
 
 .need-category-title {
   margin: 0 0 8px;
-  font-family: 'Big Shoulders Display', sans-serif;
+  font-family: 'Playfair Display', 'Merriweather', serif;
   font-size: 16px;
   font-weight: 700;
   letter-spacing: 0.05em;
@@ -1086,7 +1086,7 @@ a:focus-visible {
 
 .stat-value {
   display: block;
-  font-family: 'Big Shoulders Display', sans-serif;
+  font-family: 'Playfair Display', 'Merriweather', serif;
   font-size: 34px;
   font-weight: 700;
   line-height: 1;
