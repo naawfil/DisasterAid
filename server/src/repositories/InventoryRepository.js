@@ -36,6 +36,20 @@ class InventoryRepository extends BaseRepository {
   }
 
   /**
+  /**
+   * Tops up existing stock instead of overwriting it — same idea as
+   * increment(), but also lets the manager touch threshold/unit in the same
+   * request so the "add units" form doesn't need a second call. Fixes
+   * feature 9's set-vs-add mixup: adjusting an item used to always overwrite
+   * quantity, even when the manager meant "50 more just arrived".
+   */
+  addQuantity(itemId, amount, fields = {}) {
+    const update = { $inc: { quantity: amount } };
+    if (Object.keys(fields).length) update.$set = fields;
+    return this.model.findByIdAndUpdate(itemId, update, { new: true });
+  }
+
+  /**
    * Rows to draw down when a request is fulfilled outside the Dispatch flow
    * (a volunteer completing a field task rather than a manager building a
    * dispatch order) — nothing on the request says which warehouse to use, so
@@ -48,6 +62,7 @@ class InventoryRepository extends BaseRepository {
       ? { name: { $regex: new RegExp(`^${escapeRegex(name.trim())}$`, 'i') }, quantity: { $gt: 0 } }
       : { category, quantity: { $gt: 0 } };
     return this.model.find(filter).sort({ quantity: -1 });
+  }
   }
 
   lowStock() {

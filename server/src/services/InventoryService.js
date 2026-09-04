@@ -42,21 +42,40 @@ class InventoryService {
     return { items };
   }
 
+  /**
+   * `mode` decides what an existing row's `quantity` field means (feature 9):
+   * 'set' replaces it outright (correcting a miscount, opening stock), 'add'
+   * tops it up by that amount (units that just arrived) the same way
+   * logDonation() already does via increment(). Defaults to 'set' so any
+   * existing caller that doesn't send mode keeps today's behaviour.
+   */
   async upsertItem(payload, actor) {
     const existing = await inventoryRepository.findOneInWarehouse(payload.warehouse, payload.name);
+    const mode = payload.mode === 'add' ? 'add' : 'set';
 
     if (existing) {
-      const updated = await inventoryRepository.updateById(existing._id, {
-        quantity: payload.quantity,
-        lowStockThreshold: payload.lowStockThreshold ?? existing.lowStockThreshold,
-        unit: payload.unit ?? existing.unit,
-      });
+      const otherFields = {};
+      if (payload.lowStockThreshold !== undefined) otherFields.lowStockThreshold = payload.lowStockThreshold;
+      if (payload.unit !== undefined) otherFields.unit = payload.unit;
+
+      const updated =
+        mode === 'add'
+          ? await inventoryRepository.addQuantity(existing._id, payload.quantity, otherFields)
+          : await inventoryRepository.updateById(existing._id, {
+              quantity: payload.quantity,
+              lowStockThreshold: payload.lowStockThreshold ?? existing.lowStockThreshold,
+              unit: payload.unit ?? existing.unit,
+            });
+
       await auditService.record({
         actor,
         action: 'STOCK_ADJUSTED',
         entityType: 'InventoryItem',
         entityId: updated._id,
-        summary: `${updated.name} set to ${updated.quantity} ${updated.unit}`,
+        summary:
+          mode === 'add'
+            ? `${updated.name} increased by ${payload.quantity} to ${updated.quantity} ${updated.unit}`
+            : `${updated.name} set to ${updated.quantity} ${updated.unit}`,
       });
       return updated.toJSON();
     }

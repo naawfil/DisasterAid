@@ -13,6 +13,7 @@ export const itemRules = [
   body('quantity').isInt({ min: 0 }).withMessage('Enter the quantity').toInt(),
   body('lowStockThreshold').optional().isInt({ min: 0 }).toInt(),
   body('unit').optional().trim().isLength({ max: 20 }),
+  body('mode').optional().isIn(['set', 'add']).withMessage('mode must be "set" or "add"'),
 ];
 
 export const donationRules = [
