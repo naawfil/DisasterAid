@@ -1,19 +1,19 @@
 # DisasterAid
 
-Relief coordination platform for disaster response: aid requests, shelter capacity,
+Relief coordination platform for disaster response — aid requests, shelter capacity,
 supply inventory, volunteer dispatch, and public communication in one system.
 
-Course project for CSE470 (Software Engineering), BRAC University.
+Course project for CSE470 (Software Engineering), BRAC University. MERN stack.
 
 ## What it does
 
-**For people affected by a disaster**
+**For people affected by a disaster** (no account needed)
 
-Submit an aid request with categories, quantities, and a GPS pin, 
-Track that request from pending through to delivered with a tracking code, 
-See which shelters have space and what facilities they have, 
-Search the safety registry to find family members who reached a shelter, 
-Read official notices from the coordination team, 
+- Submit an aid request with categories, quantities, and a GPS pin
+- Track that request from pending through to delivered with a tracking code
+- See which shelters have space and what facilities they have
+- Search the safety registry to find family members who reached a shelter
+- Read official notices from the coordination team
 
 **For relief managers**
 
@@ -36,7 +36,34 @@ Read official notices from the coordination team,
 - **Database** — MongoDB
 - **Auth** — JWT access tokens, bcrypt password hashing
 
-The admin comes from `seed:admin` using the values in `.env`.
+## Running it locally
+
+Node 18+ and a MongoDB instance (local, or a free Atlas cluster).
+
+```bash
+# 1. server
+cd server
+cp .env.example .env          # set MONGO_URI and JWT_SECRET
+npm install
+npm run seed:admin            # first admin account
+npm run seed:demo             # optional: shelters, stock, sample requests
+npm run dev                   # http://localhost:5000/api
+
+# 2. client (second terminal)
+cd client
+npm install
+npm run dev                   # http://localhost:5173
+```
+
+Demo accounts created by `seed:demo`:
+
+| Role | Email | Password |
+| --- | --- | --- |
+| Relief manager | manager@disasteraid.local | Manager123! |
+| Shelter manager | shelter@disasteraid.local | Shelter123! |
+| Volunteer | arif@disasteraid.local | Volunteer123! |
+
+The admin comes from `seed:admin` using the values in your `.env`.
 
 ## Architecture
 
@@ -72,4 +99,12 @@ models (Mongoose)      database       schema and indexes
 | Communication | `GET/POST /api/comms/announcements`, `DELETE /api/comms/announcements/:id`, `GET /api/comms/alerts/templates`, `POST /api/comms/alerts` |
 | Administration | `GET /api/admin/summary`, `GET /api/admin/audit`, `GET /api/admin/export/:dataset` |
 
+## Feature coverage
 
+All 22 backlog features are implemented. The mapping from feature number to code
+lives in [`docs/BACKLOG.md`](docs/BACKLOG.md).
+
+## Team workflow
+
+Branch from `develop`, open a PR, one teammate reviews, then squash-merge.
+Details in [`CONTRIBUTING.md`](CONTRIBUTING.md).

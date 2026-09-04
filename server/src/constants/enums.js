@@ -1,0 +1,74 @@
+export const AID_CATEGORIES = Object.freeze({
+  FOOD: 'FOOD',
+  WATER: 'WATER',
+  SHELTER: 'SHELTER',
+  MEDICAL: 'MEDICAL',
+  CLOTHING: 'CLOTHING',
+});
+
+export const REQUEST_STATUS = Object.freeze({
+  PENDING: 'PENDING',
+  ASSIGNED: 'ASSIGNED',
+  DISPATCHED: 'DISPATCHED',
+  DELIVERED: 'DELIVERED',
+  CANCELLED: 'CANCELLED',
+});
+
+export const PRIORITY = Object.freeze({
+  CRITICAL: 'CRITICAL',
+  HIGH: 'HIGH',
+  MEDIUM: 'MEDIUM',
+  LOW: 'LOW',
+});
+
+export const AMENITIES = Object.freeze({
+  POWER: 'POWER',
+  MEDICAL_UNIT: 'MEDICAL_UNIT',
+  HALAL_MEALS: 'HALAL_MEALS',
+  PET_FRIENDLY: 'PET_FRIENDLY',
+  WHEELCHAIR_ACCESS: 'WHEELCHAIR_ACCESS',
+  DRINKING_WATER: 'DRINKING_WATER',
+});
+
+export const DONOR_TYPES = Object.freeze({
+  CITIZEN: 'CITIZEN',
+  NGO: 'NGO',
+  GOVERNMENT: 'GOVERNMENT',
+  BUSINESS: 'BUSINESS',
+});
+
+export const DISPATCH_STATUS = Object.freeze({
+  DRAFT: 'DRAFT',
+  DISPATCHED: 'DISPATCHED',
+  DELIVERED: 'DELIVERED',
+  CANCELLED: 'CANCELLED',
+});
+
+export const DESTINATION_TYPES = Object.freeze({
+  SHELTER: 'SHELTER',
+  REQUEST: 'REQUEST',
+});
+
+export const VOLUNTEER_SKILLS = Object.freeze({
+  DRIVER: 'DRIVER',
+  FIRST_AID: 'FIRST_AID',
+  HEAVY_LIFTING: 'HEAVY_LIFTING',
+  COOKING: 'COOKING',
+  TRANSLATION: 'TRANSLATION',
+  CHILD_CARE: 'CHILD_CARE',
+});
+
+export const TASK_STATUS = Object.freeze({
+  PENDING: 'PENDING',
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED',
+});
+
+export const SEVERITY = Object.freeze({
+  INFO: 'INFO',
+  WARNING: 'WARNING',
+  URGENT: 'URGENT',
+});
+
+export const values = (enumObject) => Object.values(enumObject);
