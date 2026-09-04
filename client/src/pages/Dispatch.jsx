@@ -28,6 +28,11 @@ const Dispatch = () => {
   const [editingNotesId, setEditingNotesId] = useState(null);
   const [noteDraft, setNoteDraft] = useState('');
 
+  // A confirm-before-submit step (feature 12): the manager sees exactly what's
+  // about to be dispatched before it hits the atomic decrement, instead of
+  // finding out only after the order's already created.
+  const [confirming, setConfirming] = useState(false);
+
   const loadOrders = useCallback(async () => {
     const data = await api.get('/inventory/dispatches');
     setOrders(data.orders);
@@ -64,9 +69,34 @@ const Dispatch = () => {
       lines: prev.lines.map((line, i) => (i === index ? { ...line, [field]: value } : line)),
     }));
 
+  const stockFor = (itemId) => stock.find((i) => i.id === itemId);
+
+  const activeLines = form.lines.filter((l) => l.inventoryItem && Number(l.quantity) > 0);
+
+  const destinationLabel = () => {
+    if (form.destinationType === 'SHELTER') {
+      const shelter = shelters.find((s) => s.id === form.destinationShelter);
+      return shelter ? shelter.name : 'the selected shelter';
+    }
+    const request = requests.find((r) => r.id === form.destinationRequest);
+    return request ? `request ${request.trackingCode}` : 'the selected request';
+  };
+
   const submit = async (event) => {
     event.preventDefault();
     setError('');
+
+    // First click reviews the order; the same button becomes "Confirm &
+    // create dispatch" and only then does the actual request go out.
+    if (!confirming) {
+      if (activeLines.length === 0) {
+        setError('Add at least one item to dispatch');
+        return;
+      }
+      setConfirming(true);
+      return;
+    }
+
     try {
       await api.post('/inventory/dispatches', {
         warehouse: form.warehouse,
@@ -80,11 +110,13 @@ const Dispatch = () => {
       });
 
       setForm((f) => ({ ...f, routeNotes: '', lines: [{ inventoryItem: '', quantity: 1 }] }));
+      setConfirming(false);
       await loadOrders();
       const refreshed = await api.get(`/inventory/stock?warehouse=${form.warehouse}`);
       setStock(refreshed.items);
     } catch (err) {
       setError(err.message);
+      setConfirming(false);
     }
   };
 
@@ -130,7 +162,11 @@ const Dispatch = () => {
         <div className="grid-2">
           <label className="field">
             <span>From warehouse</span>
-            <select value={form.warehouse} onChange={(e) => setForm({ ...form, warehouse: e.target.value })}>
+            <select
+              value={form.warehouse}
+              onChange={(e) => setForm({ ...form, warehouse: e.target.value })}
+              disabled={confirming}
+            >
               {warehouses.map((w) => (
                 <option key={w.id} value={w.id}>{w.name}</option>
               ))}
@@ -142,6 +178,7 @@ const Dispatch = () => {
             <select
               value={form.destinationType}
               onChange={(e) => setForm({ ...form, destinationType: e.target.value })}
+              disabled={confirming}
             >
               <option value="SHELTER">A shelter</option>
               <option value="REQUEST">An aid request</option>
@@ -155,6 +192,7 @@ const Dispatch = () => {
             <select
               value={form.destinationShelter}
               onChange={(e) => setForm({ ...form, destinationShelter: e.target.value })}
+              disabled={confirming}
               required
             >
               <option value="">Choose a shelter</option>
@@ -169,6 +207,7 @@ const Dispatch = () => {
             <select
               value={form.destinationRequest}
               onChange={(e) => setForm({ ...form, destinationRequest: e.target.value })}
+              disabled={confirming}
               required
             >
               <option value="">Choose a request</option>
@@ -181,25 +220,45 @@ const Dispatch = () => {
           </label>
         )}
 
-        {form.lines.map((line, index) => (
-          <div key={index} className="grid-2">
-            <label className="field">
-              <span>Item</span>
-              <select value={line.inventoryItem} onChange={(e) => updateLine(index, 'inventoryItem', e.target.value)}>
-                <option value="">Choose an item</option>
-                {stock.map((item) => (
-                  <option key={item.id} value={item.id}>
-                    {item.name} — {item.quantity} {item.unit} available
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="field">
-              <span>Quantity</span>
-              <input type="number" min="1" value={line.quantity} onChange={(e) => updateLine(index, 'quantity', e.target.value)} />
-            </label>
-          </div>
-        ))}
+        {form.lines.map((line, index) => {
+          const available = stockFor(line.inventoryItem);
+          return (
+            <div key={index} className="grid-2">
+              <label className="field">
+                <span>Item</span>
+                <select
+                  value={line.inventoryItem}
+                  onChange={(e) => updateLine(index, 'inventoryItem', e.target.value)}
+                  disabled={confirming}
+                >
+                  <option value="">Choose an item</option>
+                  {stock.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.name} — {item.quantity} {item.unit} available
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="field">
+                <span>Quantity</span>
+                <input
+                  type="number"
+                  min="1"
+                  max={available?.quantity}
+                  value={line.quantity}
+                  onChange={(e) => updateLine(index, 'quantity', e.target.value)}
+                  disabled={confirming}
+                />
+                {/* Feature 12 — the manager sees what's actually left before
+                    typing a quantity, instead of guessing or checking the
+                    Inventory page separately. */}
+                {available && (
+                  <span className="muted mono">{available.quantity} {available.unit} available</span>
+                )}
+              </label>
+            </div>
+          );
+        })}
 
         <label className="field">
           <span>Route notes for the driver</span>
@@ -208,19 +267,42 @@ const Dispatch = () => {
             value={form.routeNotes}
             onChange={(e) => setForm({ ...form, routeNotes: e.target.value })}
             placeholder="Bridge on Highway 4 is washed out — use the northern dirt road"
+            disabled={confirming}
           />
         </label>
 
-        <div className="row-controls">
-          <button
-            type="button"
-            className="btn btn-quiet"
-            onClick={() => setForm((f) => ({ ...f, lines: [...f.lines, { inventoryItem: '', quantity: 1 }] }))}
-          >
-            Add another item
-          </button>
-          <button type="submit" className="btn btn-primary btn-inline">Create dispatch</button>
-        </div>
+        {confirming ? (
+          <div className="panel stack">
+            <h2 className="sub-head">Confirm before dispatching</h2>
+            <p>
+              Dispatching {activeLines.length} item{activeLines.length === 1 ? '' : 's'} to {destinationLabel()}:
+            </p>
+            <ul className="plain-list">
+              {activeLines.map((line) => (
+                <li key={line.inventoryItem}>
+                  {stockFor(line.inventoryItem)?.name || 'Item'} × {line.quantity}
+                </li>
+              ))}
+            </ul>
+            <div className="row-controls">
+              <button type="button" className="btn btn-quiet" onClick={() => setConfirming(false)}>
+                Edit
+              </button>
+              <button type="submit" className="btn btn-primary btn-inline">Confirm &amp; create dispatch</button>
+            </div>
+          </div>
+        ) : (
+          <div className="row-controls">
+            <button
+              type="button"
+              className="btn btn-quiet"
+              onClick={() => setForm((f) => ({ ...f, lines: [...f.lines, { inventoryItem: '', quantity: 1 }] }))}
+            >
+              Add another item
+            </button>
+            <button type="submit" className="btn btn-primary btn-inline">Create dispatch</button>
+          </div>
+        )}
       </form>
 
       {orders.length === 0 ? (
