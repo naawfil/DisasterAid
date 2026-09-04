@@ -136,6 +136,28 @@ class TaskService {
     return updated.toJSON();
   }
 
+  async remove(taskId, actor) {
+    const task = await taskRepository.findById(taskId);
+    if (!task) throw new ApiError(404, 'Task not found');
+
+    const TERMINAL = [TASK_STATUS.COMPLETED, TASK_STATUS.CANCELLED];
+    if (task.assignedTo && !TERMINAL.includes(task.status)) {
+      await volunteerRepository.bumpActive(task.assignedTo, -1);
+    }
+
+    await taskRepository.deleteById(taskId);
+
+    await auditService.record({
+      actor,
+      action: 'TASK_DELETED',
+      entityType: 'Task',
+      entityId: taskId,
+      summary: `Task "${task.title}" deleted`,
+    });
+
+    return { removed: true };
+  }
+
   /** Feature 15 — ticking a line on the field checklist. */
   async toggleChecklistItem(taskId, index, done, actor) {
     const task = await taskRepository.findById(taskId);

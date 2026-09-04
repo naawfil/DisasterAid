@@ -30,6 +30,8 @@ export const taskStatusRules = [
   body('status').isIn(values(TASK_STATUS)).withMessage('Unknown task status'),
 ];
 
+export const taskIdRules = [param('id').isMongoId()];
+
 export const checklistRules = [
   param('id').isMongoId(),
   param('index').isInt({ min: 0 }).toInt(),

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { api } from '../api/client.js';
+import { api, del } from '../api/client.js';
 import Empty from '../components/Empty.jsx';
 import StatusBadge from '../components/StatusBadge.jsx';
 import { SKILL_LABELS, TASK_STATUS, titleCase } from '../constants/enums.js';
@@ -17,6 +17,7 @@ const Tasks = () => {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [deletingId, setDeletingId] = useState(null);
   const [form, setForm] = useState({
     title: '',
     description: '',
@@ -83,6 +84,22 @@ const Tasks = () => {
       load();
     } catch (err) {
       setError(err.message);
+    }
+  };
+
+  const removeTask = async (task) => {
+    const sure = window.confirm(`Delete task "${task.title}"? This cannot be undone.`);
+    if (!sure) return;
+
+    setDeletingId(task.id);
+    try {
+      await del(`/volunteers/tasks/${task.id}`);
+      setTasks((list) => list.filter((t) => t.id !== task.id));
+      setError('');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -199,6 +216,15 @@ const Tasks = () => {
                 </select>
               </label>
               <span className="muted mono"> {titleCase(task.status)} · {task.progress}%</span>
+
+              <button
+                type="button"
+                className="btn btn-quiet btn-danger"
+                onClick={() => removeTask(task)}
+                disabled={deletingId === task.id}
+              >
+                {deletingId === task.id ? 'Deleting…' : 'Delete'}
+              </button>
             </li>
           ))}
         </ul>

@@ -42,6 +42,11 @@ export const assignTask = asyncHandler(async (req, res) => {
   res.status(200).json({ success: true, data: { task } });
 });
 
+export const deleteTask = asyncHandler(async (req, res) => {
+  const data = await taskService.remove(req.params.id, req.user);
+  res.status(200).json({ success: true, data });
+});
+
 export const updateTaskStatus = asyncHandler(async (req, res) => {
   const task = await taskService.updateStatus(req.params.id, req.body.status, req.user);
   res.status(200).json({ success: true, data: { task } });

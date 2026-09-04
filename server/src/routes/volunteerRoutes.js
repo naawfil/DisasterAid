@@ -11,6 +11,7 @@ import {
   assignRules,
   taskStatusRules,
   checklistRules,
+  taskIdRules,
 } from '../validators/volunteerValidators.js';
 
 const router = Router();
@@ -31,6 +32,8 @@ router.get('/assignable', managers, controller.assignableVolunteers);
 // Tasks
 router.get('/tasks', anySignedIn, controller.listTasks);
 router.post('/tasks', managers, taskRules, validate, controller.createTask);
+// Deleting a task is a manager-level action, same as deleting a request.
+router.delete('/tasks/:id', managers, taskIdRules, validate, controller.deleteTask);
 router.patch('/tasks/:id/assign', managers, assignRules, validate, controller.assignTask);
 router.patch('/tasks/:id/status', anySignedIn, taskStatusRules, validate, controller.updateTaskStatus);
 router.patch('/tasks/:id/checklist/:index', anySignedIn, checklistRules, validate, controller.toggleChecklistItem);
