@@ -32,6 +32,19 @@ class InventoryRepository extends BaseRepository {
     return this.model.findByIdAndUpdate(itemId, { $inc: { quantity: amount } }, { new: true });
   }
 
+  /**
+   * Tops up existing stock instead of overwriting it — same idea as
+   * increment(), but also lets the manager touch threshold/unit in the same
+   * request so the "add units" form doesn't need a second call. Fixes
+   * feature 9's set-vs-add mixup: adjusting an item used to always overwrite
+   * quantity, even when the manager meant "50 more just arrived".
+   */
+  addQuantity(itemId, amount, fields = {}) {
+    const update = { $inc: { quantity: amount } };
+    if (Object.keys(fields).length) update.$set = fields;
+    return this.model.findByIdAndUpdate(itemId, update, { new: true });
+  }
+
   lowStock() {
     return this.model
       .find({ $expr: { $lte: ['$quantity', '$lowStockThreshold'] } })

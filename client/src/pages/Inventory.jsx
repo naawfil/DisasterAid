@@ -13,7 +13,7 @@ const Inventory = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  const [itemForm, setItemForm] = useState({ name: '', category: 'FOOD', quantity: 0, unit: 'unit', lowStockThreshold: 20 });
+  const [itemForm, setItemForm] = useState({ name: '', category: 'FOOD', quantity: 0, unit: 'unit', lowStockThreshold: 20, mode: 'set' });
   const [donation, setDonation] = useState({
     donorName: '',
     donorType: 'CITIZEN',
@@ -77,7 +77,7 @@ const Inventory = () => {
         quantity: Number(itemForm.quantity),
         lowStockThreshold: Number(itemForm.lowStockThreshold),
       });
-      setItemForm({ name: '', category: 'FOOD', quantity: 0, unit: 'unit', lowStockThreshold: 20 });
+      setItemForm({ name: '', category: 'FOOD', quantity: 0, unit: 'unit', lowStockThreshold: 20, mode: 'set' });
       loadStock();
       setError('');
     } catch (err) {
@@ -216,8 +216,31 @@ const Inventory = () => {
                     ))}
                   </select>
                 </label>
+                <fieldset className="field span-all">
+                  <span>If this item already exists in this warehouse…</span>
+                  <div className="choice-row">
+                    <label className="choice">
+                      <input
+                        type="radio"
+                        name="stock-mode"
+                        checked={itemForm.mode === 'set'}
+                        onChange={() => setItemForm({ ...itemForm, mode: 'set' })}
+                      />
+                      Set its quantity to this number
+                    </label>
+                    <label className="choice">
+                      <input
+                        type="radio"
+                        name="stock-mode"
+                        checked={itemForm.mode === 'add'}
+                        onChange={() => setItemForm({ ...itemForm, mode: 'add' })}
+                      />
+                      Add this many newly-arrived units
+                    </label>
+                  </div>
+                </fieldset>
                 <label className="field">
-                  <span>Quantity</span>
+                  <span>{itemForm.mode === 'add' ? 'Units arriving' : 'Set quantity to'}</span>
                   <input type="number" min="0" value={itemForm.quantity} onChange={(e) => setItemForm({ ...itemForm, quantity: e.target.value })} />
                 </label>
                 <label className="field">
