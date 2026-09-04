@@ -71,6 +71,7 @@ The role is read from the database on every request rather than trusted from the
 token, so demoting someone takes effect immediately instead of when their token
 expires. Guards in React only hide screens; the API is where access is enforced.
 
+
 ## Roles
 
 | Role | Can |
