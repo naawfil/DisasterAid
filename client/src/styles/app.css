@@ -9,8 +9,8 @@
   --ink: #101613;
   --muted: #5d6b62;
   --line: #ccd2c6;
-  --field: #1f4d3d;
-  --field-dark: #163a2d;
+  --field: #b91c1c;
+  --field-dark: #7f1d1d;
   --signal: #c2410c;
   --radius: 4px;
 }
@@ -41,7 +41,7 @@ a {
   margin: 0 0 12px;
   padding: 4px 10px 3px;
   border-left: 3px solid var(--field);
-  background: rgba(31, 77, 61, 0.08);
+  background: rgba(185, 28, 28, 0.08);
   font-family: 'IBM Plex Mono', monospace;
   font-size: 11px;
   font-weight: 500;
@@ -170,7 +170,7 @@ a:focus-visible {
 
 .choice:has(input:checked) {
   border-color: var(--field);
-  background: rgba(31, 77, 61, 0.06);
+  background: rgba(185, 28, 28, 0.06);
 }
 
 .field-error {
@@ -194,7 +194,7 @@ a:focus-visible {
   margin: 0 0 16px;
   padding: 10px 12px;
   border-left: 3px solid var(--field);
-  background: rgba(31, 77, 61, 0.08);
+  background: rgba(185, 28, 28, 0.08);
   font-size: 14px;
   color: var(--field-dark);
 }
@@ -641,7 +641,7 @@ a:focus-visible {
 
 .need-on {
   border-color: var(--field);
-  background: rgba(31, 77, 61, 0.05);
+  background: rgba(185, 28, 28, 0.05);
 }
 
 .need-check {
@@ -676,7 +676,7 @@ a:focus-visible {
 .location-ok {
   padding: 10px 12px;
   border-left: 3px solid var(--field);
-  background: rgba(31, 77, 61, 0.07);
+  background: rgba(185, 28, 28, 0.07);
   margin: 0;
 }
 
