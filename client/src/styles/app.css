@@ -12,7 +12,9 @@
   --field: #b91c1c;
   --field-dark: #7f1d1d;
   --signal: #c2410c;
-  --radius: 4px;
+  --radius: 8px;
+  --shadow-sm: 0 1px 2px rgba(16, 22, 19, 0.05);
+  --shadow-md: 0 12px 28px -16px rgba(16, 22, 19, 0.28);
 }
 
 *,
@@ -109,7 +111,7 @@ a {
   border-top: 4px solid var(--field);
   border-radius: var(--radius);
   background: var(--surface);
-  box-shadow: 0 18px 40px -30px rgba(16, 22, 19, 0.6);
+  box-shadow: var(--shadow-md);
 }
 
 /* ---------- forms ---------- */
@@ -142,6 +144,14 @@ a {
   background: var(--surface);
   font: inherit;
   color: var(--ink);
+  transition: border-color 0.15s ease;
+}
+
+.field input[type='email']:hover,
+.field input[type='password']:hover,
+.field input[type='text']:hover,
+.field input:not([type]):hover {
+  border-color: var(--muted);
 }
 
 .field input:focus-visible,
@@ -211,16 +221,19 @@ a:focus-visible {
   text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .btn-primary {
   width: 100%;
   background: var(--field);
   color: #f3f6f1;
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-primary:hover:not(:disabled) {
   background: var(--field-dark);
+  box-shadow: 0 6px 16px -8px rgba(127, 29, 29, 0.55);
 }
 
 .btn-primary:disabled {
@@ -277,6 +290,10 @@ a:focus-visible {
   padding: 14px 24px;
   border-bottom: 1px solid var(--line);
   background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .wordmark {
@@ -305,6 +322,11 @@ a:focus-visible {
   font-size: 14px;
   text-decoration: none;
   color: var(--muted);
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.nav a:hover {
+  color: var(--ink);
 }
 
 .nav a.active {
@@ -387,6 +409,7 @@ a:focus-visible {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--surface);
+  box-shadow: var(--shadow-sm);
 }
 
 .table {
@@ -524,6 +547,7 @@ a:focus-visible {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--surface);
+  box-shadow: var(--shadow-sm);
 }
 
 .panel-head {
@@ -562,6 +586,13 @@ a:focus-visible {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.card-list > li:hover {
+  border-color: var(--muted);
+  box-shadow: var(--shadow-md);
 }
 
 .card-list h2 {
@@ -595,22 +626,23 @@ a:focus-visible {
 .badge {
   display: inline-block;
   padding: 3px 9px 2px;
-  border: 1px solid currentColor;
+  border: 1px solid transparent;
   border-radius: 999px;
   font-family: 'IBM Plex Mono', monospace;
   font-size: 11px;
+  font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   white-space: nowrap;
 }
 
-.badge-status-pending, .badge-task-pending { color: #8a6a12; }
-.badge-status-assigned, .badge-task-in_progress { color: #1d4ed8; }
-.badge-status-dispatched { color: #6b21a8; }
-.badge-status-delivered, .badge-task-completed { color: var(--field); }
-.badge-status-cancelled, .badge-task-cancelled { color: var(--signal); }
-.badge-status-draft { color: var(--muted); }
-.badge-severity { color: var(--field-dark); }
+.badge-status-pending, .badge-task-pending { color: #8a6a12; background: rgba(138, 106, 18, 0.12); }
+.badge-status-assigned, .badge-task-in_progress { color: #1d4ed8; background: rgba(29, 78, 216, 0.1); }
+.badge-status-dispatched { color: #6b21a8; background: rgba(107, 33, 168, 0.1); }
+.badge-status-delivered, .badge-task-completed { color: var(--field); background: rgba(185, 28, 28, 0.1); }
+.badge-status-cancelled, .badge-task-cancelled { color: var(--signal); background: rgba(194, 65, 12, 0.1); }
+.badge-status-draft { color: var(--muted); background: rgba(93, 107, 98, 0.1); }
+.badge-severity { color: var(--field-dark); background: rgba(127, 29, 29, 0.1); }
 
 /* request form */
 .need-category {
@@ -686,6 +718,7 @@ a:focus-visible {
   border-top-width: 4px;
   border-radius: var(--radius);
   background: var(--surface);
+  box-shadow: var(--shadow-md);
 }
 
 .tracking-callout span {
