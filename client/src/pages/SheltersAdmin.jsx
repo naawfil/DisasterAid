@@ -105,6 +105,9 @@ const SheltersAdmin = () => {
     <>
       <h1 className="display display-lg">Shelters</h1>
       <p className="lede">Log arrivals and departures here — the public dashboard updates immediately.</p>
+      {!loading && (
+        <p className="muted mono">{shelters.length} shelter{shelters.length === 1 ? '' : 's'} on record</p>
+      )}
 
       {error && <p className="alert" role="alert">{error}</p>}
 
@@ -181,7 +184,7 @@ const SheltersAdmin = () => {
                   + 5 arrived
                 </button>
                 <button type="button" className="btn btn-quiet" onClick={() => loadOccupants(shelter.id)}>
-                  {openId === shelter.id ? 'Hide registry' : 'Registry'}
+                  {openId === shelter.id ? 'Hide registry' : 'View registry'}
                 </button>
               </div>
 
