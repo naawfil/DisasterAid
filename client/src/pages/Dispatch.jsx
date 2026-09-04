@@ -23,6 +23,11 @@ const Dispatch = () => {
     lines: [{ inventoryItem: '', quantity: 1 }],
   });
 
+  // Feature 19 — route notes can also be added or changed after the order
+  // already exists, not just at creation time.
+  const [editingNotesId, setEditingNotesId] = useState(null);
+  const [noteDraft, setNoteDraft] = useState('');
+
   const loadOrders = useCallback(async () => {
     const data = await api.get('/inventory/dispatches');
     setOrders(data.orders);
@@ -86,6 +91,27 @@ const Dispatch = () => {
   const setStatus = async (id, status) => {
     try {
       await api.patch(`/inventory/dispatches/${id}/status`, { status });
+      await loadOrders();
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const startEditNotes = (order) => {
+    setEditingNotesId(order.id);
+    setNoteDraft(order.routeNotes || '');
+  };
+
+  const cancelEditNotes = () => {
+    setEditingNotesId(null);
+    setNoteDraft('');
+  };
+
+  const saveNotes = async (id) => {
+    try {
+      await api.patch(`/inventory/dispatches/${id}/route-notes`, { routeNotes: noteDraft });
+      setEditingNotesId(null);
+      setNoteDraft('');
       await loadOrders();
     } catch (err) {
       setError(err.message);
@@ -214,7 +240,29 @@ const Dispatch = () => {
                 {' · '}
                 {order.items.map((i) => `${i.name} ×${i.quantity}`).join(', ')}
               </p>
-              {order.routeNotes && <p className="route-note">⚠ {order.routeNotes}</p>}
+              {editingNotesId === order.id ? (
+                <div className="stack">
+                  <textarea
+                    rows="2"
+                    value={noteDraft}
+                    onChange={(e) => setNoteDraft(e.target.value)}
+                    placeholder="Bridge on Highway 4 is washed out — use the northern dirt road"
+                  />
+                  <div className="row-controls">
+                    <button type="button" className="btn btn-quiet" onClick={cancelEditNotes}>Cancel</button>
+                    <button type="button" className="btn btn-primary btn-inline" onClick={() => saveNotes(order.id)}>
+                      Save notes
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  {order.routeNotes && <p className="route-note">⚠ {order.routeNotes}</p>}
+                  <button type="button" className="btn btn-quiet btn-inline" onClick={() => startEditNotes(order)}>
+                    {order.routeNotes ? 'Edit route notes' : 'Add route notes'}
+                  </button>
+                </>
+              )}
               <p className="muted mono">
                 {order.warehouse?.name} · {new Date(order.createdAt).toLocaleString()}
               </p>
