@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 import { TASK_STATUS, values } from '../constants/enums.js';
-
 const taskSchema = new mongoose.Schema(
   {
     title: { type: String, required: true, trim: true },
@@ -29,7 +28,6 @@ taskSchema.virtual('progress').get(function progress() {
   const done = this.checklist.filter((c) => c.done).length;
   return Math.round((done / this.checklist.length) * 100);
 });
-
 taskSchema.set('toJSON', {
   virtuals: true,
   transform: (_d, ret) => {
