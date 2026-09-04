@@ -892,6 +892,11 @@ a:focus-visible {
   color: var(--signal);
 }
 
+.spots-low {
+  border-color: #b45309;
+  color: #b45309;
+}
+
 .capacity-bar {
   height: 8px;
   margin: 12px 0 6px;
