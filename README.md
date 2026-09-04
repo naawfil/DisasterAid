@@ -9,11 +9,11 @@ Course project for CSE470 (Software Engineering), BRAC University.
 
 **For people affected by a disaster**
 
-Submit an aid request with categories, quantities, and a GPS pin
-Track that request from pending through to delivered with a tracking code
-See which shelters have space and what facilities they have
-Search the safety registry to find family members who reached a shelter
-Read official notices from the coordination team
+Submit an aid request with categories, quantities, and a GPS pin, 
+Track that request from pending through to delivered with a tracking code, 
+See which shelters have space and what facilities they have, 
+Search the safety registry to find family members who reached a shelter, 
+Read official notices from the coordination team, 
 
 **For relief managers**
 
