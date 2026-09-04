@@ -8,7 +8,6 @@ const MyTasks = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-
   const load = useCallback(async () => {
     try {
       // "My tasks" always means this account's own work, even for a manager
@@ -47,7 +46,6 @@ const MyTasks = () => {
   };
 
   if (loading) return <p className="loading">Loading your tasks…</p>;
-
   const open = tasks.filter((t) => t.status !== 'COMPLETED' && t.status !== 'CANCELLED');
   const done = tasks.filter((t) => t.status === 'COMPLETED');
 
@@ -105,7 +103,6 @@ const MyTasks = () => {
           ))}
         </ul>
       )}
-
       {done.length > 0 && (
         <>
           <h2 className="sub-head">Completed</h2>
@@ -124,5 +121,4 @@ const MyTasks = () => {
     </>
   );
 };
-
 export default MyTasks;
