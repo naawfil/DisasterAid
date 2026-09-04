@@ -110,13 +110,8 @@ const Inventory = () => {
 
   if (loading) return <p className="loading">Loading inventory…</p>;
 
-  const lowCount = items.filter((i) => i.isLowStock).length;
-
   return (
     <>
-      <p className="slip-band">
-        Supply chain{lowCount > 0 ? ` · ${lowCount} item(s) need restocking` : ' · stock healthy'}
-      </p>
       <h1 className="display display-lg">Inventory</h1>
 
       {error && <p className="alert" role="alert">{error}</p>}

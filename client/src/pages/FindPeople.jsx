@@ -27,7 +27,6 @@ const FindPeople = () => {
 
   return (
     <>
-      <p className="slip-band">Safety registry</p>
       <h1 className="display display-lg">Find someone</h1>
       <p className="lede">
         Search by name or hometown to see whether someone has checked into a shelter. Only name, hometown
@@ -54,25 +53,28 @@ const FindPeople = () => {
           checking again later.
         </Empty>
       ) : (
-        <ul className="card-list">
-          {results.map((person, index) => (
-            <li key={index} className="person-card">
-              <div>
-                <h2>{person.fullName}</h2>
-                <p className="muted">
-                  From {person.hometown} · {titleCase(person.ageGroup)}
-                </p>
-              </div>
-              <div className="person-where">
-                {person.isSafe && <span className="badge badge-status-delivered">Safe</span>}
-                <p>{person.shelter ? person.shelter.name : 'Shelter not recorded'}</p>
-                <p className="muted mono">
-                  Checked in {new Date(person.checkedInAt).toLocaleDateString()}
-                </p>
-              </div>
-            </li>
-          ))}
-        </ul>
+        <>
+          <p className="muted mono">{results.length} match{results.length === 1 ? '' : 'es'} found</p>
+          <ul className="card-list">
+            {results.map((person, index) => (
+              <li key={index} className="person-card">
+                <div>
+                  <h2>{person.fullName}</h2>
+                  <p className="muted">
+                    From {person.hometown} · {titleCase(person.ageGroup)}
+                  </p>
+                </div>
+                <div className="person-where">
+                  {person.isSafe && <span className="badge badge-status-delivered">Safe</span>}
+                  <p>{person.shelter ? person.shelter.name : 'Shelter not recorded'}</p>
+                  <p className="muted mono">
+                    Checked in {new Date(person.checkedInAt).toLocaleDateString()}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </>
       ))}
     </>
   );

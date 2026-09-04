@@ -38,7 +38,6 @@ const Register = () => {
   return (
     <div className="auth-page">
       <section className="auth-card">
-        <p className="slip-band">New account · public or volunteer</p>
         <h1 className="display">Register</h1>
         <p className="lede">
           Manager and admin access is granted by an admin after your account exists.

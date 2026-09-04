@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../api/client.js';
 import { useAuth } from '../context/AuthContext.jsx';
-import { ROLES, ROLE_LABELS } from '../constants/roles.js';
+import { ROLES } from '../constants/roles.js';
 import { SKILL_LABELS, VOLUNTEER_SKILLS } from '../constants/enums.js';
 
 const Dashboard = () => {
@@ -50,7 +50,6 @@ const Dashboard = () => {
 
   return (
     <>
-      <p className="slip-band">Session active · {ROLE_LABELS[user.role]}</p>
       <h1 className="display display-lg">Welcome, {user.name.split(' ')[0]}</h1>
 
       {error && <p className="alert" role="alert">{error}</p>}

@@ -29,7 +29,6 @@ const Login = () => {
   return (
     <div className="auth-page">
       <section className="auth-card">
-        <p className="slip-band">Relief coordination · authorised access</p>
         <h1 className="display">Sign in</h1>
         <p className="lede">Use the account your coordinator set up for you.</p>
 

@@ -54,7 +54,6 @@ const Alerts = () => {
 
   return (
     <>
-      <p className="slip-band">Message desk · channel: {channel || 'loading'}</p>
       <h1 className="display display-lg">Alerts</h1>
       <p className="lede">
         Fill in a template, copy the text, and send it through whatever channel you have. The same

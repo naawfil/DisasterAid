@@ -33,7 +33,6 @@ const PublicShelters = () => {
 
   return (
     <>
-      <p className="slip-band">Shelter capacity · updated live</p>
       <h1 className="display display-lg">Shelters</h1>
       <p className="lede">Spaces update as shelter staff log arrivals and departures.</p>
 
@@ -70,6 +69,7 @@ const PublicShelters = () => {
               Math.round((shelter.currentHeadcount / shelter.maxCapacity) * 100),
               100
             );
+            const isNearlyFull = shelter.remainingSpots > 0 && shelter.remainingSpots <= 5;
 
             return (
               <li key={shelter.id} className="shelter-card">
@@ -78,7 +78,9 @@ const PublicShelters = () => {
                     <h2>{shelter.name}</h2>
                     <p className="muted">{shelter.address}</p>
                   </div>
-                  <span className={`spots ${shelter.remainingSpots === 0 ? 'spots-full' : ''}`}>
+                  <span
+                    className={`spots ${shelter.remainingSpots === 0 ? 'spots-full' : isNearlyFull ? 'spots-low' : ''}`}
+                  >
                     {shelter.remainingSpots === 0 ? 'Full' : `${shelter.remainingSpots} spots`}
                   </span>
                 </div>

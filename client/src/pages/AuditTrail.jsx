@@ -30,8 +30,8 @@ const AuditTrail = () => {
 
   return (
     <>
-      <p className="slip-band">Administration</p>
       <h1 className="display display-lg">Audit &amp; exports</h1>
+      <p className="lede">A read-only history of who changed what, plus one-click CSV exports for reporting.</p>
 
       {error && <p className="alert" role="alert">{error}</p>}
 
@@ -43,7 +43,7 @@ const AuditTrail = () => {
         ))}
       </div>
 
-      <h2 className="sub-head">Recent activity</h2>
+      <h2 className="sub-head">Recent activity{!loading && logs.length > 0 ? ` (${logs.length})` : ''}</h2>
       {loading ? (
         <p className="loading">Loading the audit trail…</p>
       ) : logs.length === 0 ? (
